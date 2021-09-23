@@ -10,6 +10,7 @@ import virus3 from 'assets/Virus3.png';
 import virus4 from 'assets/Virus4.png';
 import virus5 from 'assets/Virus5.png';
 import virus6 from 'assets/Virus6.png';
+import client from '../services/networking/client';
 
 const VirusImgs = [virus1, virus2, virus3, virus4, virus5, virus6];
 
@@ -68,8 +69,10 @@ export default () => {
   const addVirus = () =>
     setViruses((prevViruses) => prevViruses.concat(getRandomVirus()));
 
-  const killVirus = (virusId: string) =>
+  const killVirus = (virusId: string) => {
     setViruses((prevViruses) => prevViruses.filter(({ id }) => id !== virusId));
+    client.request('delete', `/virus/${virusId}`);
+  };
 
   return (
     <>

@@ -14,13 +14,13 @@
   "dependencies": {
     "aws-sdk": "2.519.0",
     "source-map-support": "0.5.10",
-    "uuid": "3.3.2"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.17",
     "@types/node": "10.12.18",
     "@types/serverless": "^1.72.4",
-    "@types/uuid": "3.4.5",
+    "@types/uuid": "8.3.1",
     "@typescript-eslint/eslint-plugin": "2.0.0",
     "@typescript-eslint/parser": "2.0.0",
     "eslint": "6.2.2",

@@ -1,13 +1,13 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { DynamoDB } from 'aws-sdk';
 
-import uuid from 'uuid';
+import { v1 } from 'uuid';
 import { success } from '@libs/response';
 
 const documentClient = new DynamoDB.DocumentClient();
 
 export const main: APIGatewayProxyHandler = async () => {
-  const virusId = uuid();
+  const virusId = v1();
 
   await documentClient
     .put({

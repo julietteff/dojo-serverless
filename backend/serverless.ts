@@ -11,7 +11,7 @@ const serverlessConfiguration: AwsConfig.Serverless = {
     runtime: 'nodejs10.x',
     region: 'eu-west-1',
     stage: 'dev',
-    profile: 'safetracker-dev',
+    profile: 'dojo-serverless',
     usagePlan: {
       quota: {
         limit: 5000,
@@ -33,6 +33,37 @@ const serverlessConfiguration: AwsConfig.Serverless = {
             method: 'get',
             path: 'hello',
             cors: true,
+          },
+        },
+      ],
+    },
+    createVirus: {
+      handler: 'createVirus.main',
+      events: [{ schedule: 'rate(1 minute)' }],
+    },
+    virus: {
+      handler: 'virus.main',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'virus',
+            cors: true,
+          },
+        },
+      ],
+    },
+    killVirus: {
+      handler: 'virus.kill',
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: 'virus/{id}',
+            request: { parameters: { paths: { id: true } } },
+            cors: {
+              origins: 'http://localhost:3000',
+            },
           },
         },
       ],
