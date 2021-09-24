@@ -1,6 +1,7 @@
 import * as AwsConfig from 'serverless/aws';
 
 import ApiGatewayErrors from './resources/apiGatewayErrors';
+import ServerlessDB from './resources/dynamodb';
 
 const serverlessConfiguration: AwsConfig.Serverless = {
   service: 'dojo-serverless-backend',
@@ -15,16 +16,17 @@ const serverlessConfiguration: AwsConfig.Serverless = {
     stage: 'dev',
     profile: 'dojo-serverless',
     iamRoleStatements: [
-      // {
-      //   Effect: 'Allow',
-      //   Action: [
-      //     'dynamodb:Query',
-      //     'dynamodb:PutItem',
-      //     'dynamodb:DeleteItem',
-      //     'dynamodb:ListStreams',
-      //   ],
-      //   Resource: { 'Fn::GetAtt': ['DojoServerlessTable', 'Arn'] },
-      // },
+      {
+        Effect: 'Allow',
+        Action: [
+          'dynamodb:Query',
+          'dynamodb:PutItem',
+          'dynamodb:DeleteItem',
+          'dynamodb:ListStreams',
+        ],
+        Resource:
+          'arn:aws:dynamodb:eu-west-1:404007213163:table/dojo-serverless-table',
+      },
     ],
     usagePlan: {
       quota: {
@@ -63,10 +65,36 @@ const serverlessConfiguration: AwsConfig.Serverless = {
         },
       ],
     },
+    postVirus: {
+      handler: 'src/handlers/virus/post.main',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'virus',
+            cors: true,
+          },
+        },
+      ],
+    },
+    deleteVirus: {
+      handler: 'src/handlers/virus/delete.main',
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: 'virus/{id}',
+            request: { parameters: { paths: { id: true } } },
+            cors: true,
+          },
+        },
+      ],
+    },
   },
   resources: {
     Resources: {
       ...ApiGatewayErrors,
+      DynamoDBTable: { ...ServerlessDB },
     },
   },
 };

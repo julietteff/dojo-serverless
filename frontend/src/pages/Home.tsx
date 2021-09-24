@@ -67,25 +67,28 @@ export default () => {
       { method: 'GET' },
     );
     const { viruses } = await response.json();
-    setViruses(viruses.map(({ id }: { id: string }) => getRandomVirus(id)));
+    console.log(viruses);
+    setViruses(
+      viruses.map(({ sortKey }: { sortKey: string }) =>
+        getRandomVirus(sortKey),
+      ),
+    );
   });
 
   const addVirus = async () => {
-    console.log('Implement the post route first!');
-    // const response = await fetch(
-    //   `${process.env.REACT_APP_API_BASE_URL}/virus`,
-    //   { method: 'POST' },
-    // );
-    // const { id } = await response.json();
-    // setViruses((prevViruses) => prevViruses.concat(getRandomVirus(id)));
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/virus`,
+      { method: 'POST' },
+    );
+    const { id } = await response.json();
+    setViruses((prevViruses) => prevViruses.concat(getRandomVirus(id)));
   };
 
   const killVirus = async (virusId: string) => {
-    console.log('Implement the delete route first!');
-    // await fetch(`${process.env.REACT_APP_API_BASE_URL}/virus/${virusId}`, {
-    //   method: 'DELETE',
-    // });
-    // setViruses((prevViruses) => prevViruses.filter(({ id }) => id !== virusId));
+    await fetch(`${process.env.REACT_APP_API_BASE_URL}/virus/${virusId}`, {
+      method: 'DELETE',
+    });
+    setViruses((prevViruses) => prevViruses.filter(({ id }) => id !== virusId));
   };
 
   return (
@@ -109,6 +112,7 @@ export default () => {
               key={virus.id}
               {...virus}
               onClick={() => {
+                console.log(virus);
                 killVirus(virus.id);
               }}
             />
